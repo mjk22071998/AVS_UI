@@ -1,5 +1,7 @@
 import sys
 import math
+
+from PyQt5.QtCore import QUrl, QFileInfo
 from androguard.core.bytecodes.apk import APK
 from PIL import Image
 
@@ -27,7 +29,9 @@ if __name__ == "__main__":
         destination_folder = sys.argv[2]
     try:
         apk = APK(filename)
-        generate_png(apk, filename, destination_folder)
+        url = QUrl.fromLocalFile(filename)
+        file = QFileInfo(filename).fileName()
+        generate_png(apk, file, destination_folder)
         print(f"Image successfully generated from {filename}")
     except Exception as e:
         print("[!] An exception occured with: {}".format(filename))

@@ -9,15 +9,16 @@
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QFileInfo
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QFileDialog
 
 
 class Ui_Form(object):
 
-
     def __init__(self):
-        self.selectFile = None
-        self.fileName=""
+        self.filename = None
+        self.file = None
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -41,7 +42,7 @@ class Ui_Form(object):
         self.createImage.setObjectName("createImage")
         self.createImage.clicked.connect(self.displayImageClicker)
         self.imageLable = QtWidgets.QLabel(Form)
-        self.imageLable.setGeometry(QtCore.QRect(480, 220, 67, 17))
+        self.imageLable.setGeometry(QtCore.QRect(320, 16, 361, 501))
         self.imageLable.setObjectName("imageLable")
         self.actionOpen_File = QtWidgets.QAction(Form)
         self.actionOpen_File.setObjectName("actionOpen_File")
@@ -66,18 +67,22 @@ class Ui_Form(object):
 
     def decodeImageClicker(self):
         print("Decode Image clicked")
-        os.system("python3 apktoimage.py "+self.fileName+" .")
+        os.system("python3 apktoimage.py " + self.filename + " .")
 
     def displayImageClicker(self):
         print("Select Image clicked")
+        image = "./"+self.file+".png"
+        pixmap = QPixmap(image)
+        self.imageLable.setPixmap(pixmap)
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.fileName, path = QFileDialog.getOpenFileName(None, "QFileDialog.getOpenFileName()", "",
-                                                     "APK Files (*.apk)", options=options)
-        if self.fileName:
-            print(self.fileName)
+        self.filename, path = QFileDialog.getOpenFileName(None, "Select APK file", "/home/muhammadjunaidkhalid/",
+                                                          "APK Files (*.apk)", options=options)
+        self.file = QFileInfo(self.filename).fileName()
+        if self.filename:
+            print(self.filename)
 
 
 if __name__ == "__main__":
