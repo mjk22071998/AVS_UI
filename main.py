@@ -44,7 +44,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "AVS UI"))
         self.selectFile.setText(_translate("Form", "Select file"))
         self.decodeFile.setText(_translate("Form", "Decode file"))
         self.extractFeatures.setText(_translate("Form", "Extract features"))
