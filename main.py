@@ -56,13 +56,15 @@ class Ui_Form(object):
     def selectImageClicker(self):
         print("Select Image clicked")
         self.openFileNameDialog()
+        self.imageLable.setText("Selected File Name: "+self.file)
+
 
     def decodeImageClicker(self):
         print("Decode Image clicked")
         os.system("python3 apktoimage.py " + self.filename + " .")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setText("APk Decoding done")
+        msg.setText("APk Decoding Complete. Now you can create Image from bytecode")
         msg.setWindowTitle("APK decoding")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
