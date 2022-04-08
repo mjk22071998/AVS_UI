@@ -3,7 +3,7 @@ import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QFileInfo
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 
 class Ui_Form(object):
@@ -60,9 +60,15 @@ class Ui_Form(object):
     def decodeImageClicker(self):
         print("Decode Image clicked")
         os.system("python3 apktoimage.py " + self.filename + " .")
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("APk Decoding done")
+        msg.setWindowTitle("APK decoding")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
 
     def displayImageClicker(self):
-        print("Select Image clicked")
+        print("Display Image clicked")
         image = "./"+self.file+".png"
         pixmap = QPixmap(image)
         self.imageLable.setPixmap(pixmap)
