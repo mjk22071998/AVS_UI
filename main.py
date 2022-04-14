@@ -44,11 +44,11 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "AVS UI"))
+        Form.setWindowTitle(_translate("Form", "Android Vulnerability Scanner"))
         self.selectFile.setText(_translate("Form", "Select file"))
         self.decodeFile.setText(_translate("Form", "Decode file"))
         self.extractFeatures.setText(_translate("Form", "Extract features"))
-        self.testAIModel.setText(_translate("Form", "Test AI model"))
+        self.testAIModel.setText(_translate("Form", "Classify"))
         self.createImage.setText(_translate("Form", "Create image"))
         self.imageLable.setText(_translate("Form", "TextLabel"))
         self.actionOpen_File.setText(_translate("Form", "Open File"))
