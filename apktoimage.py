@@ -5,6 +5,7 @@ from PyQt5.QtCore import QUrl, QFileInfo
 from androguard.core.bytecodes.apk import APK
 from PIL import Image
 
+
 def get_dex_bytes(apk: APK) -> bytes:
     for f in apk.get_files():
         if f.endswith(".dex"):
@@ -18,7 +19,6 @@ def generate_png(apk: APK, filename: str, folder: str):
     current_len = len(stream)
     image = Image.frombytes(mode='L', size=(1, current_len), data=stream)
     image.save(f"{folder}/{filename}.png")
-    
 
 
 if __name__ == "__main__":

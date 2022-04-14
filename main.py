@@ -70,8 +70,9 @@ class Ui_Form(object):
 
     def displayImageClicker(self):
         print("Display Image clicked")
-        image = "./" + self.file + ".png"
+        image = "./images/" + self.file + ".png"
         pixmap = QPixmap(image)
+        pixmap=pixmap.scaled(256, 256,)
         self.imageLable.setPixmap(pixmap)
 
     def openFileNameDialog(self):
