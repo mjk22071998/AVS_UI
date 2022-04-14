@@ -56,12 +56,11 @@ class Ui_Form(object):
     def selectImageClicker(self):
         print("Select Image clicked")
         self.openFileNameDialog()
-        self.imageLable.setText("Selected File Name: "+self.file)
-
+        self.imageLable.setText("Selected File Name: " + self.file)
 
     def decodeImageClicker(self):
         print("Decode Image clicked")
-        os.system("python3 apktoimage.py " + self.filename + " .")
+        os.system("python3 apktoimage.py " + self.filename + " ./images")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setText("APk Decoding Complete. Now you can create Image from bytecode")
@@ -71,15 +70,15 @@ class Ui_Form(object):
 
     def displayImageClicker(self):
         print("Display Image clicked")
-        image = "./"+self.file+".png"
+        image = "./" + self.file + ".png"
         pixmap = QPixmap(image)
         self.imageLable.setPixmap(pixmap)
 
     def openFileNameDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.filename, path = QFileDialog.getOpenFileName(None, "Select APK file", "/home/muhammadjunaidkhalid/",
-                                                          "APK Files (*.apk)", options=options)
+        self.filename, path = QFileDialog.getOpenFileName(None, "Select APK file", ".",
+                                                          "All Files (*.*)", options=options)
         self.file = QFileInfo(self.filename).fileName()
         if self.filename:
             print(self.filename)
