@@ -1,9 +1,8 @@
 import sys
-import math
 
+from PIL import Image
 from PyQt5.QtCore import QUrl, QFileInfo
 from androguard.core.bytecodes.apk import APK
-from PIL import Image
 
 
 def get_dex_bytes(apk: APK) -> bytes:
