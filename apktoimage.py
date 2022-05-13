@@ -33,5 +33,5 @@ if __name__ == "__main__":
         generate_png(apk, file, destination_folder)
         print(f"Image successfully generated from {filename}")
     except Exception as e:
-        print("[!] An exception occured with: {}".format(filename))
+        print("[!] An exception occurred with: {}".format(filename))
         print("Exception: {}".format(e))

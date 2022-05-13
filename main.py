@@ -6,10 +6,13 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 
+
+
+
 class Ui_Form(object):
 
     def __init__(self):
-        self.filename = None
+        self.folder = None
         self.file = None
 
     def setupUi(self, Form):
@@ -26,6 +29,7 @@ class Ui_Form(object):
         self.extractFeatures = QtWidgets.QPushButton(Form)
         self.extractFeatures.setGeometry(QtCore.QRect(30, 290, 141, 25))
         self.extractFeatures.setObjectName("extractFeatures")
+        self.extractFeatures.clicked.connect(self.extractFeaturesClicked())
         self.testAIModel = QtWidgets.QPushButton(Form)
         self.testAIModel.setGeometry(QtCore.QRect(30, 380, 141, 25))
         self.testAIModel.setObjectName("testAIModel")
@@ -60,29 +64,36 @@ class Ui_Form(object):
 
     def decodeImageClicker(self):
         print("Decode Image clicked")
-        os.system("python3 apktoimage.py " + self.filename + " ./images")
+        files = os.listdir(self.folder)
+        for f in files:
+            os.system("python3 apktoimage.py ./apks/" + f + " ./images")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
-        msg.setText("APk Decoding Complete. Now you can create Image from bytecode")
+        msg.setText("APk Decoding Complete. Now you can create Images from bytecode")
         msg.setWindowTitle("APK decoding")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
 
-    def displayImageClicker(self):
-        print("Display Image clicked")
-        image = "./images/" + self.file + ".png"
-        pixmap = QPixmap(image)
-        pixmap=pixmap.scaled(256, 256,)
-        self.imageLable.setPixmap(pixmap)
-
     def openFileNameDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.filename, path = QFileDialog.getOpenFileName(None, "Select APK file", ".",
-                                                          "All Files (*.*)", options=options)
-        self.file = QFileInfo(self.filename).fileName()
-        if self.filename:
-            print(self.filename)
+        self.folder=str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+
+    def displayImageClicker(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("Image creation complete check folder ./images")
+        msg.setWindowTitle("Image creation")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
+
+    def extractFeaturesClicked(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("CSV generation complete check folder ./csvs")
+        msg.setWindowTitle("Image creation")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
 
 
 if __name__ == "__main__":
