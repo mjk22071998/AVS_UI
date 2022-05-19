@@ -1,26 +1,20 @@
+import csv
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QFileInfo
 from PyQt5.QtGui import QPixmap
+from androguard.core.bytecodes.apk import APK
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
-
-
-def extractFeaturesClicked():
-    msg = QMessageBox()
-    msg.setIcon(QMessageBox.Information)
-    msg.setText("CSV generation complete check folder ./csvs")
-    msg.setWindowTitle("Image creation")
-    msg.setStandardButtons(QMessageBox.Ok)
-    msg.exec_()
-    print("function called")
 
 
 class Ui_Form(object):
 
     def __init__(self):
         self.folder = None
-        self.file = None
+        self.files = None
+        self.data = []
+        self.dataList = [[], []]
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -37,7 +31,7 @@ class Ui_Form(object):
         self.extractFeatures = QtWidgets.QPushButton(Form)
         self.extractFeatures.setGeometry(QtCore.QRect(30, 290, 141, 25))
         self.extractFeatures.setObjectName("extractFeatures")
-        self.extractFeatures.clicked.connect(lambda: extractFeaturesClicked())
+        self.extractFeatures.clicked.connect(lambda: self.extractFeaturesClicked())
         self.testAIModel = QtWidgets.QPushButton(Form)
         self.testAIModel.setGeometry(QtCore.QRect(30, 380, 141, 25))
         self.testAIModel.setObjectName("testAIModel")
@@ -68,13 +62,19 @@ class Ui_Form(object):
     def selectImageClicker(self):
         print("Select Image clicked")
         self.openFileNameDialog()
-        self.imageLable.setText("Selected File Name: " + self.folder)
+        self.imageLable.setText(self.folder + " Files selected")
 
     def decodeImageClicker(self):
+        for file in self.files:
+            a = APK("./apks/" + file)
+            data = []
+            data.append(a.get_app_name())
+            data.append(a.get_permissions())
+            data.append(a.get_activities())
+            data.append(a.get_certificates())
+            data.append(a.get_dex())
+            self.dataList.append(data)
         print("Decode Image clicked")
-        files = os.listdir(self.folder)
-        for f in files:
-            os.system("python3 apktoimage.py ./apks/" + f + " ./images")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setText("APk Decoding Complete. Now you can create Images from bytecode")
@@ -85,15 +85,30 @@ class Ui_Form(object):
     def openFileNameDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.folder=str(QFileDialog.getExistingDirectory(self.selectFile, "Select Directory"))
+        self.folder = str(QFileDialog.getExistingDirectory(self.selectFile, "Select Directory"))
+        self.files = os.listdir(self.folder)
 
     def displayImageClicker(self):
+        for f in self.files:
+            os.system("python3 apktoimage.py ./apks/" + f + " ./images")
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setText("Image creation complete check folder ./images")
         msg.setWindowTitle("Image creation")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
+
+    def extractFeaturesClicked(self):
+        with open("./csvs/features.csv", "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(self.dataList)
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("CSV generation complete check folder ./csvs")
+        msg.setWindowTitle("Image creation")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec_()
+        print("function called")
 
 
 if __name__ == "__main__":
